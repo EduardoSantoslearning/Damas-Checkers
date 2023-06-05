@@ -1,11 +1,11 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
 
-.quadrado{
-    width: 79px;
-    height: 79px;
+.quadrado {
+    width: 60px;
+    height: 60px;
     border: 1px solid black;
     font-size: 20px;
     font-weight: bold;
@@ -15,22 +15,84 @@
     justify-content: center;
 }
 
-#tabuleiro{
-    width: 648px;
-    height: 648px;
+#tabuleiro {
+    padding: 25px;
+    width: 493px;
+    height: 493px;
     background-color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
 }
-.container{
-    width: 960px;
-    height: 960px;
- background-color: #fff;
+
+.container {
+    background-color: #fff;
     display: flex;
-    align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
-    margin: auto;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    background-color: aqua;
+    border: 1px solid black;
+    border-radius: 5px;
+
+}
+
+.info {
+    padding-top: 25px;
+    display: flex;
+    justify-content: space-around;
+}
+
+#captJogador1 {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#captJogador2 {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.botoes {
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 15px;
+
+}
+
+#saveGame {
+    width: 135px;
+    padding: 15px;
+    font-size: 15px;
+    border: 2px solid black;
+    border-radius: 15px
+}
+
+#mostrarArvore {
+    width: 135px;
+    padding: 15px;
+    font-size: 15px;
+    border: 2px solid black;
+    border-radius: 15px
+}
+
+#sair {
+    width: 135px;
+    padding: 15px;
+    font-size: 15px;
+    border: 2px solid black;
+    border-radius: 15px
+}
+
+.M{
+
+
+}
+
+.H{
+    
 }
