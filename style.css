@@ -89,6 +89,65 @@
     border-radius: 15px
 }
 
+.captJogador {
+    width: 125px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.captMaquina {
+    width: 125px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#iniciar{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(175, 175, 182, 0.5);
+    position: absolute;
+    z-index: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+#iniciaJogo{
+    display: flex;
+    width: 230px;
+    height: 100px;
+        margin: 25px;
+    padding: 15px;
+    background-color: aqua;
+    border-radius: 15px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+
+
+#carregarJogo{
+    display: flex;
+    width: 230px;
+    height: 100px;
+    margin: 25px;
+    padding: 15px;
+    border-radius: 15px;
+    background-color: aqua;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+
 .M{
 
 
