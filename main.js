@@ -4,12 +4,14 @@
 const tabuleiroDOM = document.querySelector('#tabuleiro')
 var tabuleiro = [];
 var tabuleiroJogavel = [];
+var matrizArvore = [];
 let inicioDeJogo = null;
 let jogoSalvo = null;
 var contagemPecasHumano = 0;    //contador de pecas capturadas
 var contagemPecasMaquina = 0;   //contador de pecas capturadas
 var pecaSelecionada = null;
 var casaDestino = null;
+var turnoMaquina = 1;
 
 
 for (let i = 0; i < 8; i++) {
@@ -50,8 +52,8 @@ for (let i = 0; i < 8; i++) {
             quadrado.innerHTML = `H`;
             quadrado.setAttribute("onclick", `seleciona(${i}, ${j}, '${tabuleiroJogavel[i][j][2]}')`)
         } else if (i >= 3 && (i + j) % 2 == 1) { // campos disponiveis para movimentação
-            tabuleiroJogavel[i][j] = [i, j, 'P']
-            quadrado.innerHTML = `P`;
+            tabuleiroJogavel[i][j] = [i, j, ' ']
+            quadrado.innerHTML = ` `;
             quadrado.setAttribute("onclick", `seleciona(${i}, ${j}, '${tabuleiroJogavel[i][j][2]}')`)
         } else { //campos nulos
         }
@@ -67,8 +69,8 @@ for (let i = 0; i < 8; i++) {
 if (tabuleiroJogavel !== null) {
     inicioDeJogo = JSON.parse(JSON.stringify(tabuleiroJogavel));
 
-    console.log("I", inicioDeJogo);
-    console.log("T", tabuleiroJogavel);
+    //console.log("I", inicioDeJogo);
+    //console.log("T", tabuleiroJogavel);
 }
 
 //console.log(tabuleiroJogavel)
@@ -94,42 +96,49 @@ function seleciona(i, j, value) {   //selecionar peça e movimentação
             pecaSelecionada = null;
         }
 
-    } else if (value == 'P' && pecaSelecionada > 0) {
+    } else if (value == ' ' && pecaSelecionada > 0) {
         if (pecaSelecionada - `${i}${j}` == 9 || pecaSelecionada - `${i}${j}` == 11) { //Movimenta a peça
             tabuleiroJogavel[`${i}`][`${j}`][2] = 'H';  //recebe a peça
-            tabuleiroJogavel[pecaSelecionada.toString().charAt(0)][pecaSelecionada.toString().charAt(1)][2] = 'P'; //desocupa a posição anteiror
-
-
-            pecaSelecionada = null;
-            vezMaquina = true;
-            
-            atualizaTabuleiro();
-            jogadaMaquina();
-
-        } else if (pecaSelecionada - `${i}${j}` == 22 && (pecaSelecionada - `${i}${j}` - 11 == 11 && tabuleiroJogavel[(pecaSelecionada + 11).toString().charAt(0)][(pecaSelecionada + 11).toString().charAt(1)][2] == 'M')) { //come peça do inimigo
-            tabuleiroJogavel[`${i}`][`${j}`][2] = 'H';  //recebe a peça
-
-            tabuleiroJogavel[(pecaSelecionada + 11).toString().charAt(0)][(pecaSelecionada + 11).toString().charAt(1)][2] == 'P'; //desocupa a posição anteiror
-            tabuleiroJogavel[pecaSelecionada.toString().charAt(0)][pecaSelecionada.toString().charAt(1)][2] = 'P'; //desocupa a posição anteiror
-
-            pecaSelecionada = null;
-            vezMaquina = true;
-            
-            atualizaTabuleiro();
-            jogadaMaquina();
-
-        } else if (pecaSelecionada - `${i}${j}` == 18 && (pecaSelecionada - `${i}${j}` - 9 == 9 && tabuleiroJogavel[(pecaSelecionada + 9).toString().charAt(0)][(pecaSelecionada + 9).toString().charAt(1)][2] == 'M')) { //come peça do inimigo
-            tabuleiroJogavel[`${i}`][`${j}`][2] = 'H';  //recebe a peça
-
-            tabuleiroJogavel[(pecaSelecionada + 11).toString().charAt(0)][(pecaSelecionada + 11).toString().charAt(1)][2] == 'P'; //desocupa a posição anteiror
-            tabuleiroJogavel[pecaSelecionada.toString().charAt(0)][pecaSelecionada.toString().charAt(1)][2] = 'P'; //desocupa a posição anteiror
-
+            tabuleiroJogavel[pecaSelecionada.toString().charAt(0)][pecaSelecionada.toString().charAt(1)][2] = ' '; //desocupa a posição anterior
 
             pecaSelecionada = null;
             vezMaquina = true;
 
             atualizaTabuleiro();
             jogadaMaquina();
+            turnoMaquina += 1;
+
+        }
+        else if (pecaSelecionada - `${i}${j}` == 18 && tabuleiroJogavel[(pecaSelecionada - 9).toString().charAt(0)][(pecaSelecionada - 9).toString().charAt(1)][2] == 'M') {
+            tabuleiroJogavel[`${i}`][`${j}`][2] = 'H';
+            tabuleiroJogavel[(pecaSelecionada - 9).toString().charAt(0)][(pecaSelecionada - 9).toString().charAt(1)][2] = ' ';
+            tabuleiroJogavel[pecaSelecionada.toString().charAt(0)][pecaSelecionada.toString().charAt(1)][2] = ' '; //desocupa a posição anterior
+
+            pecaSelecionada = null;
+            vezMaquina = true;
+
+            atualizaTabuleiro();
+            jogadaMaquina();
+            turnoMaquina += 1;
+
+
+
+
+        }
+        else if (pecaSelecionada - `${i}${j}` == 22 && tabuleiroJogavel[(pecaSelecionada - 11).toString().charAt(0)][(pecaSelecionada - 11).toString().charAt(1)][2] == 'M') {
+            tabuleiroJogavel[`${i}`][`${j}`][2] = 'H';
+            tabuleiroJogavel[(pecaSelecionada - 11).toString().charAt(0)][(pecaSelecionada - 11).toString().charAt(1)][2] = ' ';
+            tabuleiroJogavel[pecaSelecionada.toString().charAt(0)][pecaSelecionada.toString().charAt(1)][2] = ' '; //desocupa a posição anterior
+
+            pecaSelecionada = null;
+            vezMaquina = true;
+
+            atualizaTabuleiro();
+            jogadaMaquina();
+            turnoMaquina += 1;
+
+
+
 
         }
 
@@ -138,17 +147,158 @@ function seleciona(i, j, value) {   //selecionar peça e movimentação
 
 function jogadaMaquina() {
 
+    const jogadasPossiveis = obterJogadasPossiveis();
     if (vezMaquina == true) {
-        vezMaquina = false;
-        atualizaTabuleiro();
-
+        let melhorJogada = 0;
+        minimax(jogadasPossiveis);
     }
+
+    vezMaquina = false;
+    atualizaTabuleiro();
+
+}
+
+function obterJogadasPossiveis() {
+    let jogadasPossiveis = [];
+    let possiveis = [];
+    let w, x, y, z = null;
+    for (let i = 0; i < 8; i++) { //peças
+        possiveis[i] = [];
+        for (let j = 0; j < 8; j++) {
+            possiveis[i][j] = [];
+            //Distribui peças
+            if (tabuleiroJogavel[i][j][2] == 'M') { // peças máquina
+                if (i + 1 <= 7 && j - 1 >= 0) {
+                    x = i + 1;
+                    y = j - 1;
+                    if (tabuleiroJogavel[x][y][2] == ' ') {
+                        possiveis[i][j].push(tabuleiroJogavel[x][y]);
+                    }
+                }
+                if (i + 1 <= 7 && j + 1 <= 7) {
+                    x = i + 1;
+                    y = j + 1;
+                    if (tabuleiroJogavel[x][y][2] == ' ') {
+                        possiveis[i][j].push(tabuleiroJogavel[x][y]);
+                    }
+                }
+                if (i + 2 <= 7 && j + 2 <= 7) {
+                    x = i + 2;
+                    y = j + 2;
+                    w = i + 1;
+                    z = j + 1;
+                    if (tabuleiroJogavel[x][y][2] == ' ' && tabuleiroJogavel[w][z][2] == 'H') {
+                        possiveis[i][j].push(tabuleiroJogavel[x][y]);
+                    }
+                }
+                if (i + 2 <= 7 && j - 2 >= 0) {
+                    x = i + 2;
+                    y = j - 2;
+                    w = i + 1;
+                    z = j - 1;
+                    if (tabuleiroJogavel[x][y][2] == ' ' && tabuleiroJogavel[w][z][2] == 'H') {
+                        possiveis[i][j].push(tabuleiroJogavel[x][y]);
+                    }
+                }
+                if (possiveis[i][j].length !== 0) {
+                    for (let count = 0; count < possiveis[i][j].length; count++) {
+                        let jogada = [tabuleiroJogavel[i][j], possiveis[i][j][count]];
+                        jogadasPossiveis.push(jogada);
+                    }
+                }
+            }
+        }
+    }
+    return jogadasPossiveis;
+
+
 }
 
 
 
+function minimax(jogadasPossiveis) {
+    let melhorJogada = null;
+    let melhorPontuacao = -5;
+    let pontuacao = null;
+    if (jogadasPossiveis.length != 0) {
+
+        for (jogada of jogadasPossiveis) {
+            let tabuleiro = JSON.parse(JSON.stringify(tabuleiroJogavel));
+            pontuacao = realizarJogadaTeste(jogada, tabuleiro);
+            if (pontuacao > melhorPontuacao) {
+                melhorPontuacao = pontuacao;
+                melhorJogada = JSON.parse(JSON.stringify(tabuleiro));
+
+            } else if (pontuacao == melhorPontuacao) {
+                if (Math.random() < 0.5) {
+                    melhorPontuacao = pontuacao;
+                    melhorJogada = JSON.parse(JSON.stringify(tabuleiro));
+                }
+
+            }
+            arvore(jogada, pontuacao, turnoMaquina);
+        }
+    }
+
+    tabuleiroJogavel = JSON.parse(JSON.stringify(melhorJogada));
+
+}
 
 
+function arvore(jogada, pontuacao, turnoMaquina) {
+    matrizArvore.push(`Turno: ${turnoMaquina} Peça Movida: ${jogada[0]} Posição Destino: ${jogada[1]} Pontuação da Jogada: ${pontuacao}  `)
+
+
+    //console.log(matrizArvore);
+}
+
+function realizarJogadaTeste(jogada, tabuleiro) {
+    pontuacao = 0;
+    let i = jogada[0][0];
+    let j = jogada[0][1];
+    let k = jogada[1][0];
+    let l = jogada[1][1];
+    let posicaoSelecionada = `${i}${j}`;
+    let posicaoAlvo = `${k}${l}`;
+    //console.log(i, j, k, l + "posicaoalvo:", posicaoAlvo, " posicaoSeleionada:", posicaoSelecionada);
+
+
+    if (parseInt(posicaoSelecionada) - parseInt(posicaoAlvo) == -9 || parseInt(posicaoSelecionada) - parseInt(posicaoAlvo) == -11) { //Movimenta a peça
+        tabuleiro[`${k}`][`${l}`][2] = 'M';  //recebe a peça
+        tabuleiro[jogada.toString().charAt(0)][jogada.toString().charAt(2)][2] = ' '; //desocupa a posição anteiror
+
+        pontuacao += 1;
+        if (l == 0 || l == 7) {
+            pontuacao += 1;
+
+        }
+        return pontuacao;
+
+    }
+    else if (parseInt(posicaoAlvo) - parseInt(posicaoSelecionada) == 18 && tabuleiro[(parseInt(posicaoSelecionada) + 9).toString().charAt(0)][(parseInt(posicaoSelecionada) + 9).toString().charAt(1)][2] == 'H') {
+        tabuleiro[`${k}`][`${l}`][2] = 'M';
+        tabuleiro[(parseInt(posicaoSelecionada) + 9).toString().charAt(0)][(parseInt(posicaoSelecionada) + 9).toString().charAt(1)][2] = ' ';
+        tabuleiro[jogada.toString().charAt(0)][jogada.toString().charAt(2)][2] = ' '; //desocupa a posição anterior
+
+        pontuacao += 3;
+        return pontuacao;
+
+
+
+    }
+    else if (parseInt(posicaoAlvo) - parseInt(posicaoSelecionada) == 22 && tabuleiro[(parseInt(posicaoSelecionada) + 11).toString().charAt(0)][(parseInt(posicaoSelecionada) + 11).toString().charAt(1)][2] == 'H') {
+        tabuleiro[`${k}`][`${l}`][2] = 'M';
+        tabuleiro[(parseInt(posicaoSelecionada) + 11).toString().charAt(0)][(parseInt(posicaoSelecionada) + 11).toString().charAt(1)][2] = ' ';
+        tabuleiro[jogada.toString().charAt(0)][jogada.toString().charAt(2)][2] = ' '; //desocupa a posição anterior
+
+
+        pontuacao += 3;
+        return pontuacao;
+
+
+
+    }
+}
 
 
 
@@ -161,8 +311,6 @@ function notificacao() {
         document.getElementById("mensagenNotificacao").innerHTML = "Derrota!"
     }
 }
-
-
 
 
 /*===============Game FOOTER================================ */
@@ -182,10 +330,14 @@ function sairJogo() {
 }
 
 
+function mostrarArvore() {
+    document.getElementById("mostrarMatriz").style.display = "flex";
+    document.getElementById("matriz").innerHTML = matrizArvore;
+}
 
-
-
-
+function voltarAoJogo() {
+    document.getElementById("mostrarMatriz").style.display = "none";
+}
 
 
 
@@ -197,19 +349,16 @@ function iniciaJogo() {
 
 function carregarJogo() {
     document.getElementById("iniciar").style.display = "none";
-    tabuleiroJogavel = JSON.parse(JSON.stringify(jogoSalvo));
+    if (jogoSalvo !== null) {
+        tabuleiroJogavel = JSON.parse(JSON.stringify(jogoSalvo));
+    }
 
     atualizaTabuleiro();
 }
 
 
 
-
 /*===============Atualização das jogadas================================ */
-
-
-
-
 
 function atualizaTabuleiro() {
 
@@ -229,12 +378,11 @@ function atualizaTabuleiro() {
                 atualiza.style.backgroundColor = "black";
                 contagemPecasHumano++;
 
-            } else if (tabuleiroJogavel[i][j][2] == 'P') { // campos disponiveis para movimentação
+            } else if (tabuleiroJogavel[i][j][2] == ' ') { // campos disponiveis para movimentação
                 atualiza.setAttribute("onclick", `seleciona(${i}, ${j}, '${tabuleiroJogavel[i][j][2]}')`)
-                atualiza.innerHTML = 'P';
+                atualiza.innerHTML = ' ';
                 atualiza.style.backgroundColor = "black";
 
-            } else { //campos nulos    
             }
         }
     }
