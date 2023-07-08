@@ -511,9 +511,9 @@ function realizarJogadaTeste(jogada, tabuleiro) {
 
 function notificacao() {
     if (contagemPecasHumano == 12) {
-        document.getElementById("mensagenNotificacao").innerHTML = "Vitória!"
+        document.getElementById("mensagemNotificacao").innerHTML = "Vitória!"
     } else if (contagemPecasMaquina == 12) {
-        document.getElementById("mensagenNotificacao").innerHTML = "Derrota!"
+        document.getElementById("mensagemNotificacao").innerHTML = "Derrota!"
     }
 }
 
@@ -607,9 +607,11 @@ function atualizaTabuleiro() {
 
     document.getElementById('captJogador2').innerHTML = (12 - `${contagemPecasHumano}`); //atualiza as peças capturadas pelo jogador
     document.getElementById('captJogador1').innerHTML = (12 - `${contagemPecasMaquina}`); //atualiza as peças capturadas pela máquina
-    if (contagemPecasHumano == 12 || contagemPecasMaquina == 12) {
-        notificacao(contagemPecasHumano, contagemPecasMaquina);
-    }
+
     contagemPecasHumano = 0;
     contagemPecasMaquina = 0;
+    if(contagemPecasHumano == 12 || contagemPecasMaquina == 12){
+        notificacao(contagemPecasHumano, contagemPecasMaquina);
+    }
+    
 }
