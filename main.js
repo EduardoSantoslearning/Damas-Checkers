@@ -500,13 +500,6 @@ function realizarJogadaTeste(jogada, tabuleiro) {
         return pontuacao;
 
     }
-    else if (k == 7&&(parseInt(posicaoSelecionada) - parseInt(posicaoAlvo) == -9 || parseInt(posicaoSelecionada) - parseInt(posicaoAlvo) == -11)){
-        tabuleiro[`${k}`][`${l}`][2] = 'DM';  //recebe a peça
-        tabuleiro[jogada.toString().charAt(0)][jogada.toString().charAt(2)][2] = ' '; //desocupa a posição anteiror
-        pontuacao +=3;
-
-    }
-
 
 }
 
