@@ -65,15 +65,11 @@ for (let i = 0; i < 8; i++) {
 
     }
 }
-//console.log(tabuleiroJogavel);
 if (tabuleiroJogavel !== null) {
     inicioDeJogo = JSON.parse(JSON.stringify(tabuleiroJogavel));
 
-    //console.log("I", inicioDeJogo);
-    //console.log("T", tabuleiroJogavel);
 }
 
-//console.log(tabuleiroJogavel)
 
 
 //Componentes do Jogo
@@ -98,12 +94,19 @@ function seleciona(i, j, value) {   //selecionar peça e movimentação
 
     } else if (value == ' ' && pecaSelecionada > 0) {
         if (pecaSelecionada - `${i}${j}` == 9 || pecaSelecionada - `${i}${j}` == 11) { //Movimenta a peça
-            tabuleiroJogavel[`${i}`][`${j}`][2] = 'H';  //recebe a peça
-            tabuleiroJogavel[pecaSelecionada.toString().charAt(0)][pecaSelecionada.toString().charAt(1)][2] = ' '; //desocupa a posição anterior
+            if (`${i}`==0 ) { //Movimenta a peça
+                console.log(`${i}`);
+                tabuleiroJogavel[`${i}`][`${j}`][2] = 'DH';  //recebe a peça
+                tabuleiroJogavel[pecaSelecionada.toString().charAt(0)][pecaSelecionada.toString().charAt(1)][2] = ' '; //desocupa a posição anterior
 
+            } else{
+                tabuleiroJogavel[`${i}`][`${j}`][2] = 'H';  //recebe a peça
+                tabuleiroJogavel[pecaSelecionada.toString().charAt(0)][pecaSelecionada.toString().charAt(1)][2] = ' '; //desocupa a posição anterior
+            
+            }
             pecaSelecionada = null;
             vezMaquina = true;
-
+            
             atualizaTabuleiro();
             jogadaMaquina();
             turnoMaquina += 1;
@@ -121,9 +124,6 @@ function seleciona(i, j, value) {   //selecionar peça e movimentação
             jogadaMaquina();
             turnoMaquina += 1;
 
-
-
-
         }
         else if (pecaSelecionada - `${i}${j}` == 22 && tabuleiroJogavel[(pecaSelecionada - 11).toString().charAt(0)][(pecaSelecionada - 11).toString().charAt(1)][2] == 'M') {
             tabuleiroJogavel[`${i}`][`${j}`][2] = 'H';
@@ -137,12 +137,113 @@ function seleciona(i, j, value) {   //selecionar peça e movimentação
             jogadaMaquina();
             turnoMaquina += 1;
 
+        }
+        else if (`${i}`==0 && (pecaSelecionada - `${i}${j}` == 9 || pecaSelecionada - `${i}${j}` == 11)) { //Movimenta a peça
+            tabuleiroJogavel[`${i}`][`${j}`][2] = 'DH';  //recebe a peça
+            tabuleiroJogavel[pecaSelecionada.toString().charAt(0)][pecaSelecionada.toString().charAt(1)][2] = ' '; //desocupa a posição anterior
 
+            pecaSelecionada = null;
+            vezMaquina = true;
 
+            atualizaTabuleiro();
+            jogadaMaquina();
+            turnoMaquina += 1;
 
         }
 
     }
+    if (value == 'DH') {
+
+        if (pecaSelecionada !== null) {
+            const elementoAnterior = document.getElementById(pecaSelecionada);
+            if (elementoAnterior !== null) {
+                elementoAnterior.style.backgroundColor = "black";
+            }
+        }
+
+        const elementoAtual = document.getElementById(`${i}${j}`);
+        if (pecaSelecionada !== `${i}${j}` && elementoAtual !== null) {
+            elementoAtual.style.backgroundColor = "green";
+            pecaSelecionada = `${i}${j}`;
+        } else {
+            pecaSelecionada = null;
+        }
+
+    } else if (value == ' ' && pecaSelecionada > 0) {
+        if (pecaSelecionada - `${i}${j}` == 9 || pecaSelecionada - `${i}${j}` == 11
+        || pecaSelecionada - `${i}${j}` == -9 || pecaSelecionada - `${i}${j}` == -11) { //Movimenta a peça
+            tabuleiroJogavel[`${i}`][`${j}`][2] = 'DH';  //recebe a peça
+            tabuleiroJogavel[pecaSelecionada.toString().charAt(0)][pecaSelecionada.toString().charAt(1)][2] = ' '; //desocupa a posição anterior
+
+            console.log(pecaSelecionada)
+            pecaSelecionada = null;
+            vezMaquina = true;
+            
+
+            atualizaTabuleiro();
+            jogadaMaquina();
+            turnoMaquina += 1;
+
+        }
+        else if (pecaSelecionada - `${i}${j}` == 18 && tabuleiroJogavel[(pecaSelecionada - 9).toString().charAt(0)][(pecaSelecionada - 9).toString().charAt(1)][2] == 'M'
+        || pecaSelecionada - `${i}${j}` == 18 && tabuleiroJogavel[(pecaSelecionada - 9).toString().charAt(0)][(pecaSelecionada - 9).toString().charAt(1)][2] == 'DM') {
+            tabuleiroJogavel[`${i}`][`${j}`][2] = 'DH';
+            tabuleiroJogavel[(pecaSelecionada - 9).toString().charAt(0)][(pecaSelecionada - 9).toString().charAt(1)][2] = ' ';
+            tabuleiroJogavel[pecaSelecionada.toString().charAt(0)][pecaSelecionada.toString().charAt(1)][2] = ' '; //desocupa a posição anterior
+
+            pecaSelecionada = null;
+            vezMaquina = true;
+
+            atualizaTabuleiro();
+            jogadaMaquina();
+            turnoMaquina += 1;
+
+        }
+        else if (pecaSelecionada - `${i}${j}` == -18 && tabuleiroJogavel[(pecaSelecionada + 9).toString().charAt(0)][(pecaSelecionada + 9).toString().charAt(1)][2] == 'M'
+        || pecaSelecionada - `${i}${j}` == -18 && tabuleiroJogavel[(pecaSelecionada + 9).toString().charAt(0)][(pecaSelecionada + 9).toString().charAt(1)][2] == 'DM') {
+            tabuleiroJogavel[`${i}`][`${j}`][2] = 'DH';
+            tabuleiroJogavel[(pecaSelecionada + 9).toString().charAt(0)][(pecaSelecionada + 9).toString().charAt(1)][2] = ' ';
+            tabuleiroJogavel[pecaSelecionada.toString().charAt(0)][pecaSelecionada.toString().charAt(1)][2] = ' '; //desocupa a posição anterior
+
+            pecaSelecionada = null;
+            vezMaquina = true;
+
+            atualizaTabuleiro();
+            jogadaMaquina();
+            turnoMaquina += 1;
+
+        }
+        else if (pecaSelecionada - `${i}${j}` == 22 && tabuleiroJogavel[(pecaSelecionada - 11).toString().charAt(0)][(pecaSelecionada - 11).toString().charAt(1)][2] == 'M'
+        || pecaSelecionada - `${i}${j}` == 22 && tabuleiroJogavel[(pecaSelecionada - 11).toString().charAt(0)][(pecaSelecionada - 11).toString().charAt(1)][2] == 'DM') {
+            tabuleiroJogavel[`${i}`][`${j}`][2] = 'DH';
+            tabuleiroJogavel[(pecaSelecionada - 11).toString().charAt(0)][(pecaSelecionada - 11).toString().charAt(1)][2] = ' ';
+            tabuleiroJogavel[pecaSelecionada.toString().charAt(0)][pecaSelecionada.toString().charAt(1)][2] = ' '; //desocupa a posição anterior
+
+            pecaSelecionada = null;
+            vezMaquina = true;
+
+            atualizaTabuleiro();
+            jogadaMaquina();
+            turnoMaquina += 1;
+
+        }
+        else if (pecaSelecionada - `${i}${j}` == -22 && tabuleiroJogavel[(pecaSelecionada + 11).toString().charAt(0)][(pecaSelecionada + 11).toString().charAt(1)][2] == 'M'
+        || pecaSelecionada - `${i}${j}` == -22 && tabuleiroJogavel[(pecaSelecionada + 11).toString().charAt(0)][(pecaSelecionada + 11).toString().charAt(1)][2] == 'DM') {
+            tabuleiroJogavel[`${i}`][`${j}`][2] = 'DH';
+            tabuleiroJogavel[(pecaSelecionada + 11).toString().charAt(0)][(pecaSelecionada + 11).toString().charAt(1)][2] = ' ';
+            tabuleiroJogavel[pecaSelecionada.toString().charAt(0)][pecaSelecionada.toString().charAt(1)][2] = ' '; //desocupa a posição anterior
+
+            pecaSelecionada = null;
+            vezMaquina = true;
+
+            atualizaTabuleiro();
+            jogadaMaquina();
+            turnoMaquina += 1;
+
+        }
+
+    }
+
 }
 
 function jogadaMaquina() {
@@ -207,6 +308,79 @@ function obterJogadasPossiveis() {
                     }
                 }
             }
+            if (tabuleiroJogavel[i][j][2] == 'DM') { // peças  Dama
+                if (i + 1 <= 7 && j - 1 >= 0) {
+                    x = i + 1;
+                    y = j - 1;
+                    if (tabuleiroJogavel[x][y][2] == ' ') {
+                        possiveis[i][j].push(tabuleiroJogavel[x][y]);
+                    }
+                }
+                if (i - 1 <= 7 && j + 1 >= 0) {
+                    x = i - 1;
+                    y = j + 1;
+                    if (tabuleiroJogavel[x][y][2] == ' ') {
+                        possiveis[i][j].push(tabuleiroJogavel[x][y]);
+                    }
+                }
+                if (i + 1 <= 7 && j + 1 <= 7) {
+                    x = i + 1;
+                    y = j + 1;
+                    if (tabuleiroJogavel[x][y][2] == ' ') {
+                        possiveis[i][j].push(tabuleiroJogavel[x][y]);
+                    }
+                }
+                if (i - 1 <= 7 && j - 1 <= 7) {
+                    x = i - 1;
+                    y = j - 1;
+                    if (tabuleiroJogavel[x][y][2] == ' ') {
+                        possiveis[i][j].push(tabuleiroJogavel[x][y]);
+                    }
+                }
+                if (i + 2 <= 7 && j + 2 <= 7) {
+                    x = i + 2;
+                    y = j + 2;
+                    w = i + 1;
+                    z = j + 1;
+                    if (tabuleiroJogavel[x][y][2] == ' ' && (tabuleiroJogavel[w][z][2] == 'H'||tabuleiroJogavel[w][z][2] == 'DH')) {
+                        possiveis[i][j].push(tabuleiroJogavel[x][y]);
+                    }
+                }
+                if (i - 2 <= 7 && j - 2 <= 7) {
+                    x = i - 2;
+                    y = j - 2;
+                    w = i - 1;
+                    z = j - 1;
+                    if (tabuleiroJogavel[x][y][2] == ' ' && (tabuleiroJogavel[w][z][2] == 'H'||tabuleiroJogavel[w][z][2] == 'DH')) {
+                        possiveis[i][j].push(tabuleiroJogavel[x][y]);
+                    }
+                }
+                if (i + 2 <= 7 && j - 2 >= 0) {
+                    x = i + 2;
+                    y = j - 2;
+                    w = i + 1;
+                    z = j - 1;
+                    if (tabuleiroJogavel[x][y][2] == ' ' && (tabuleiroJogavel[w][z][2] == 'H'||tabuleiroJogavel[w][z][2] == 'DH')) {
+                        possiveis[i][j].push(tabuleiroJogavel[x][y]);
+                    }
+                }
+                if (i - 2 <= 7 && j + 2 >= 0) {
+                    x = i - 2;
+                    y = j + 2;
+                    w = i - 1;
+                    z = j + 1;
+                    if (tabuleiroJogavel[x][y][2] == ' ' && (tabuleiroJogavel[w][z][2] == 'H'||tabuleiroJogavel[w][z][2] == 'DH')) {
+                        possiveis[i][j].push(tabuleiroJogavel[x][y]);
+                    }
+                }
+                if (possiveis[i][j].length !== 0) {
+                    for (let count = 0; count < possiveis[i][j].length; count++) {
+                        let jogada = [tabuleiroJogavel[i][j], possiveis[i][j][count]];
+                        jogadasPossiveis.push(jogada);
+                    }
+                }
+            }
+
         }
     }
     return jogadasPossiveis;
@@ -248,8 +422,6 @@ function minimax(jogadasPossiveis) {
 function arvore(jogada, pontuacao, turnoMaquina) {
     matrizArvore.push(`Turno: ${turnoMaquina} Peça Movida: ${jogada[0]} Posição Destino: ${jogada[1]} Pontuação da Jogada: ${pontuacao}  `)
 
-
-    //console.log(matrizArvore);
 }
 
 function realizarJogadaTeste(jogada, tabuleiro) {
@@ -260,17 +432,24 @@ function realizarJogadaTeste(jogada, tabuleiro) {
     let l = jogada[1][1];
     let posicaoSelecionada = `${i}${j}`;
     let posicaoAlvo = `${k}${l}`;
-    //console.log(i, j, k, l + "posicaoalvo:", posicaoAlvo, " posicaoSeleionada:", posicaoSelecionada);
-
 
     if (parseInt(posicaoSelecionada) - parseInt(posicaoAlvo) == -9 || parseInt(posicaoSelecionada) - parseInt(posicaoAlvo) == -11) { //Movimenta a peça
         tabuleiro[`${k}`][`${l}`][2] = 'M';  //recebe a peça
         tabuleiro[jogada.toString().charAt(0)][jogada.toString().charAt(2)][2] = ' '; //desocupa a posição anteiror
 
         pontuacao += 1;
-        if (l == 0 || l == 7) {
+        if (l == 0 || l == 7) { //jogada estratégica
             pontuacao += 1;
 
+        }
+        if(l+1<=7 && l-1>=0 && k+1<=7){
+            if ((parseInt(jogada.toString().charAt(6)) + 1) <= 7 && (parseInt(jogada.toString().charAt(6)) + 1) >= 0 &&
+                (parseInt(jogada.toString().charAt(8)) + 1) <= 7 && (parseInt(jogada.toString().charAt(8)) + 1) >= 0 &&
+                (tabuleiro[(parseInt(jogada.toString().charAt(6)) + 1)][(parseInt(jogada.toString().charAt(8)) + 1)][2] == 'H' ||
+                    tabuleiro[(parseInt(jogada.toString().charAt(6)) + 1)][(parseInt(jogada.toString().charAt(8)) - 1)][2] == 'H')) {
+                        
+                pontuacao -= 2;
+            }
         }
         return pontuacao;
 
@@ -280,9 +459,21 @@ function realizarJogadaTeste(jogada, tabuleiro) {
         tabuleiro[(parseInt(posicaoSelecionada) + 9).toString().charAt(0)][(parseInt(posicaoSelecionada) + 9).toString().charAt(1)][2] = ' ';
         tabuleiro[jogada.toString().charAt(0)][jogada.toString().charAt(2)][2] = ' '; //desocupa a posição anterior
 
-        pontuacao += 3;
-        return pontuacao;
+        pontuacao += 4;
+        if (l == 0 || l == 7) { //jogada estratégica
+            pontuacao += 1;
 
+        }
+        if(l+1<=7 && l-1>=0 && k+1<=7){
+            if ((parseInt(jogada.toString().charAt(6)) + 1) <= 7 && (parseInt(jogada.toString().charAt(6)) + 1) >= 0 &&
+                (parseInt(jogada.toString().charAt(8)) + 1) <= 7 && (parseInt(jogada.toString().charAt(8)) + 1) >= 0 &&
+                (tabuleiro[(parseInt(jogada.toString().charAt(6)) + 1)][(parseInt(jogada.toString().charAt(8)) + 1)][2] == 'H' ||
+                    tabuleiro[(parseInt(jogada.toString().charAt(6)) + 1)][(parseInt(jogada.toString().charAt(8)) - 1)][2] == 'H')) {
+                        
+                pontuacao -= 2;
+            }
+        }
+        return pontuacao;
 
 
     }
@@ -292,12 +483,31 @@ function realizarJogadaTeste(jogada, tabuleiro) {
         tabuleiro[jogada.toString().charAt(0)][jogada.toString().charAt(2)][2] = ' '; //desocupa a posição anterior
 
 
-        pontuacao += 3;
+        pontuacao += 4;
+        if (l == 0 || l == 7) { //jogada estratégica
+            pontuacao += 1;
+
+        }
+        if(l+1<=7 && l-1>=0 && k+1<=7){
+            if ((parseInt(jogada.toString().charAt(6)) + 1) <= 7 && (parseInt(jogada.toString().charAt(6)) + 1) >= 0 &&
+                (parseInt(jogada.toString().charAt(8)) + 1) <= 7 && (parseInt(jogada.toString().charAt(8)) + 1) >= 0 &&
+                (tabuleiro[(parseInt(jogada.toString().charAt(6)) + 1)][(parseInt(jogada.toString().charAt(8)) + 1)][2] == 'H' ||
+                    tabuleiro[(parseInt(jogada.toString().charAt(6)) + 1)][(parseInt(jogada.toString().charAt(8)) - 1)][2] == 'H')) {
+                        
+                pontuacao -= 2;
+            }
+        }
         return pontuacao;
 
-
+    }
+    else if (k == 7&&(parseInt(posicaoSelecionada) - parseInt(posicaoAlvo) == -9 || parseInt(posicaoSelecionada) - parseInt(posicaoAlvo) == -11)){
+        tabuleiro[`${k}`][`${l}`][2] = 'DM';  //recebe a peça
+        tabuleiro[jogada.toString().charAt(0)][jogada.toString().charAt(2)][2] = ' '; //desocupa a posição anteiror
+        pontuacao +=3;
 
     }
+
+
 }
 
 
@@ -381,6 +591,16 @@ function atualizaTabuleiro() {
             } else if (tabuleiroJogavel[i][j][2] == ' ') { // campos disponiveis para movimentação
                 atualiza.setAttribute("onclick", `seleciona(${i}, ${j}, '${tabuleiroJogavel[i][j][2]}')`)
                 atualiza.innerHTML = ' ';
+                atualiza.style.backgroundColor = "black";
+
+            } else if (tabuleiroJogavel[i][j][2] == 'DM') { // campos disponiveis para movimentação
+                atualiza.setAttribute("onclick", `seleciona(${i}, ${j}, '${tabuleiroJogavel[i][j][2]}')`)
+                atualiza.innerHTML = 'DM';
+                atualiza.style.backgroundColor = "black";
+
+            } else if (tabuleiroJogavel[i][j][2] == 'DH') { // campos disponiveis para movimentação
+                atualiza.setAttribute("onclick", `seleciona(${i}, ${j}, '${tabuleiroJogavel[i][j][2]}')`)
+                atualiza.innerHTML = 'DH';
                 atualiza.style.backgroundColor = "black";
 
             }
