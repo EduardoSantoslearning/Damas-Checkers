@@ -384,7 +384,7 @@ function obterJogadasPossiveis() {
                 }
             }
             */
-            
+
         }
     }
     return jogadasPossiveis;
@@ -436,8 +436,15 @@ function realizarJogadaTeste(jogada, tabuleiro) {
     let posicaoAlvo = `${k}${l}`;
 
     if (parseInt(posicaoSelecionada) - parseInt(posicaoAlvo) == -9 || parseInt(posicaoSelecionada) - parseInt(posicaoAlvo) == -11) { //Movimenta a peça
-        tabuleiro[`${k}`][`${l}`][2] = 'M';  //recebe a peça
-        tabuleiro[jogada.toString().charAt(0)][jogada.toString().charAt(2)][2] = ' '; //desocupa a posição anteiror
+        if (`${k}` == 7) { //Movimenta a peça
+            tabuleiro[`${k}`][`${l}`][2] = 'DM';  //recebe a peça
+            tabuleiro[jogada.toString().charAt(0)][jogada.toString().charAt(2)][2] = ' '; //desocupa a posição anteiror
+    
+        } else {
+            tabuleiro[`${k}`][`${l}`][2] = 'M';  //recebe a peça
+            tabuleiro[jogada.toString().charAt(0)][jogada.toString().charAt(2)][2] = ' '; //desocupa a posição anteiror
+    
+        }
 
         pontuacao += 1;
         if (l == 0 || l == 7) { //jogada estratégica
@@ -588,7 +595,7 @@ function atualizaTabuleiro() {
                 atualiza.innerHTML = ' ';
                 atualiza.style.backgroundColor = "black";
 
-            } else if (tabuleiroJogavel[i][j][2] == 'DM') { // campos disponiveis para movimentação
+            } else if ( tabuleiroJogavel[i][j][2] == 'DM') { // campos disponiveis para movimentação
                 atualiza.setAttribute("onclick", `seleciona(${i}, ${j}, '${tabuleiroJogavel[i][j][2]}')`)
                 atualiza.innerHTML = 'DM';
                 atualiza.style.backgroundColor = "black";
@@ -608,10 +615,10 @@ function atualizaTabuleiro() {
     document.getElementById('captJogador2').innerHTML = (12 - `${contagemPecasHumano}`); //atualiza as peças capturadas pelo jogador
     document.getElementById('captJogador1').innerHTML = (12 - `${contagemPecasMaquina}`); //atualiza as peças capturadas pela máquina
 
-    if(contagemPecasHumano !== 12 || contagemPecasMaquina !== 12){
+    if (contagemPecasHumano !== 12 || contagemPecasMaquina !== 12) {
         notificacao(contagemPecasHumano, contagemPecasMaquina);
     }
     contagemPecasHumano = 0;
     contagemPecasMaquina = 0;
-    
+
 }
